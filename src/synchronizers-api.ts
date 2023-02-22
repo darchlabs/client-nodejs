@@ -1,7 +1,7 @@
 import { EventDataResponse } from "./interfaces/event-data-response";
 import { EventsResponse } from "./interfaces/events-reponse";
 
-export class SynchronizersAPI {
+export default class Synchronizer {
   private baseURL: string;
 
   constructor(baseURL: string) {
