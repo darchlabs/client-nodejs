@@ -1,1 +1,3 @@
-export * from "./src";
+import SynchronizerClient from "./synchronizer";
+
+export default SynchronizerClient;

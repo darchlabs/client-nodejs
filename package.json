@@ -1,6 +1,6 @@
 {
   "name": "synchronizer-v2",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "synchronizer-v2 is the darchlabs module in charge of synchronizing and indexing the event data of smart contracts.",
   "main": "index.ts",
   "scripts": {
