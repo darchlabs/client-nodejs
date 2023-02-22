@@ -1,4 +1,4 @@
-import Synchronizer from "./synchronizers-api";
+import Synchronizer from "./synchronizer";
 
 let synchronizer: Synchronizer;
 
@@ -8,6 +8,7 @@ declare global {
 
 function getClient(apiUrl: string) {
   const client = new Synchronizer(apiUrl);
+
   return client;
 }
 

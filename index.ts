@@ -1,2 +1,3 @@
-import { synchronizer } from "./src/synchronizer-client";
-export default synchronizer;
+import SynchronizerClient from "./synchronizer";
+
+export default SynchronizerClient;
