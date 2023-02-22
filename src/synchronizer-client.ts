@@ -1,4 +1,4 @@
-import Synchronizer from "./synchronizers-api";
+import Synchronizer from "./synchronizer";
 
 let synchronizer: Synchronizer;
 
