@@ -1,2 +1,2 @@
-export * from "./src";
-export * from "./src/interfaces";
+import { synchronizer } from "./src/synchronizer-client";
+export default synchronizer;
