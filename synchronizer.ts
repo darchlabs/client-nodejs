@@ -1,6 +1,6 @@
 import type { ListEventsResponse } from "./requests";
 import parseAbi from "./utils";
-import { Event, EventDataResponse, EventsResponse } from "./events-interfaces";
+import { Event, EventDataResponse, EventsResponse } from "./event-interfaces";
 
 export default class Synchronizer {
   private URL: string;
@@ -9,7 +9,7 @@ export default class Synchronizer {
     this.URL = URL;
   }
 
-  public async GetEvents(): Promise<ListEventsResponse> {
+  public async GetEvents(): Promise<EventsResponse> {
     try {
       const url = `${this.URL}/api/v1/events`;
       const res = await fetch(url, {
@@ -19,7 +19,7 @@ export default class Synchronizer {
         },
       });
 
-      const data = (await res.json()) as ListEventsResponse;
+      const data = (await res.json()) as EventsResponse;
       return data;
     } catch (err: any) {
       throw err;
@@ -58,7 +58,7 @@ export default class Synchronizer {
     }
   }
 
-  public async GetEventsByAddress(address: string): Promise<Event[]> {
+  public async GetEventsByAddress(address: string): Promise<EventsResponse> {
     try {
       const url = `${this.URL}/api/v1/events/${address}`;
       const res = await fetch(url, {
@@ -68,7 +68,7 @@ export default class Synchronizer {
         },
       });
 
-      const data = (await res.json()) as Event[];
+      const data = (await res.json()) as EventsResponse;
       return data;
     } catch (err: any) {
       throw err;
