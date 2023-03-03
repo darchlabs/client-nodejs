@@ -1,1 +1,1 @@
-export * as Synchronizer from "./src";
+export * as Synchronizer from "./src/index";
