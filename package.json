@@ -1,10 +1,10 @@
 {
-  "name": "@darchlabs/synchronizer",
+  "name": "synchronizer-v2",
   "repository": {
     "type": "git",
     "url": "https://github.com/darchlabs/sync-nodejs-client.git"
   },
-  "version": "1.4.4",
+  "version": "1.5.1",
   "description": "synchronizer-v2 is the darchlabs module in charge of synchronizing and indexing the event data of smart contracts.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -16,7 +16,7 @@
     "build:esm": "tsc",
     "build:cjs": "tsc --module CommonJS --outDir dist/cjs"
   },
-  "author": "Darchlabs",
+  "author": "darchlabs",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^17.0.21",
