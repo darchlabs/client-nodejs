@@ -5,27 +5,15 @@
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["dom", "es2017"],
-    "types": ["node"],
     "module": "es2015",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "outDir": "dist/esm",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
     "target": "es6",
-    "skipLibCheck": true
+    "typeRoots": ["./node_modules/@types", "./dist"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
-
-// {
-//   "include": ["src/**/*"],
-//   "ts-node": {
-//     "transpileOnly": true /* Skips type checking for faster unit testing */
-//   },
-//   "compilerOptions": {
-//     "declaration": true /* Generates corresponding '.d.ts' file. */,
-//     "outDir": "./dist/" /* Redirect output structure to the directory. */
-//   }
-// }

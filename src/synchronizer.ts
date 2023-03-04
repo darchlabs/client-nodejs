@@ -1,6 +1,7 @@
 import type { ListEventsResponse } from "./requests";
 import parseAbi from "./utils";
 import { Event, EventDataResponse, EventsResponse } from "./event-interfaces";
+import fetch from "node-fetch";
 
 export default class Synchronizer {
   private URL: string;
