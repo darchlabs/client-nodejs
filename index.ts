@@ -1,1 +1,2 @@
-export * as Synchronizer from "./src/index";
+import SynchronizerClient from "./src/index";
+export default SynchronizerClient;
