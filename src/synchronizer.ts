@@ -1,7 +1,8 @@
+/* eslint-disable no-useless-catch */
 import type { ListEventsResponse } from "./requests";
 import parseAbi from "./utils";
 import { Event, EventDataResponse, EventsResponse } from "./event-interfaces";
-import fetch from "@remix-run/web-fetch";
+import axios from "axios";
 
 export default class Synchronizer {
   private URL: string;
@@ -13,14 +14,14 @@ export default class Synchronizer {
   public async GetEvents(): Promise<EventsResponse> {
     try {
       const url = `${this.URL}/api/v1/events`;
-      const res = await fetch(url, {
+      const res = await axios.get<EventsResponse>(url, {
         method: "GET",
         headers: {
           "content-type": "application/json",
         },
       });
 
-      const data = (await res.json()) as EventsResponse;
+      const data = res.data as EventsResponse;
       return data;
     } catch (err: any) {
       throw err;
@@ -62,16 +63,16 @@ export default class Synchronizer {
   public async GetEventsByAddress(address: string): Promise<EventsResponse> {
     try {
       const url = `${this.URL}/api/v1/events/${address}`;
-      const res = await fetch(url, {
+      const res = await axios.get<EventsResponse>(url, {
         method: "GET",
         headers: {
           "content-type": "application/json",
         },
       });
 
-      const data = (await res.json()) as EventsResponse;
+      const data = res.data as EventsResponse;
       return data;
-    } catch (err: any) {
+    } catch (err: unknown) {
       throw err;
     }
   }
@@ -79,14 +80,14 @@ export default class Synchronizer {
   async GetEvent(address: string, eventName: string): Promise<Event> {
     try {
       const url = `${this.URL}/api/v1/events/${address}/${eventName}`;
-      const res = await fetch(url, {
+      const res = await axios.get<Event>(url, {
         method: "GET",
         headers: {
           "content-type": "application/json",
         },
       });
 
-      const data = (await res.json()) as Event;
+      const data = res.data as Event;
       return data;
     } catch (err: any) {
       throw err;
@@ -99,14 +100,14 @@ export default class Synchronizer {
   ): Promise<EventDataResponse> {
     try {
       const url = `${this.URL}/api/v1/events/${address}/${eventName}/data`;
-      const res = await fetch(url, {
+      const res = await axios.get<EventDataResponse>(url, {
         method: "GET",
         headers: {
           "content-type": "application/json",
         },
       });
 
-      const data = (await res.json()) as EventDataResponse;
+      const data = res.data as EventDataResponse;
       return data;
     } catch (err: any) {
       throw err;

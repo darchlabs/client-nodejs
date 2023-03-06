@@ -1,4 +1,4 @@
-type _synchronizer = {
+export type _synchronizer = {
   network: Network;
   address: string;
   raw?: string;
