@@ -1,6 +1,6 @@
 {
   "name": "synchronizer-v2",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -138,7 +138,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "rm -r dist/ && tsc"
   },
   "repository": {
     "type": "git",
