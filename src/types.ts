@@ -33,6 +33,27 @@ export type Abi = {
   type: string;
 };
 
+export type abiMethod = {
+  inputs: [];
+  name: string;
+  outputs: [Output];
+  stateMutability: string;
+  type: string;
+};
+
+type Output = {
+  internalType: string;
+  name: string;
+  type: string;
+};
+
+export type abiEvent = {
+  anonymous: false;
+  inputs: abiMethod[];
+  name: string;
+  type: string;
+};
+
 export type Network =
   | "ethereum"
   | "rinkeby"

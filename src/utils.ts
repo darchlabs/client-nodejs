@@ -1,16 +1,11 @@
 import type { Abi, AbiInput } from "./types";
 
 export default function parseAbi(inputString: string): Abi {
-  let abiObject: any;
-  try {
-    abiObject = JSON.parse(inputString) as any;
-  } catch (e) {
-    console.log("Error parsing JSON: ", e);
-  }
+  const abiObject = JSON.parse(inputString) as any;
 
   if (
-    typeof abiObject.anonymous !== "boolean" ||
     !Array.isArray(abiObject.inputs) ||
+    typeof abiObject.anonymous !== "boolean" ||
     typeof abiObject.name !== "string" ||
     typeof abiObject.type !== "string"
   ) {
@@ -19,7 +14,6 @@ export default function parseAbi(inputString: string): Abi {
   const abiInputs = abiObject.inputs.map((inputObject: any) => {
     if (
       typeof inputObject.indexed !== "boolean" ||
-      typeof inputObject.internalType !== "string" ||
       typeof inputObject.name !== "string" ||
       typeof inputObject.type !== "string"
     ) {

@@ -2,6 +2,7 @@ export interface Event {
   id: string;
   network: string;
   address: string;
+  name: string;
   latestBlockNumber: number;
   abi: {
     name: string;
