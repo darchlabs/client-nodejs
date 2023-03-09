@@ -1,9 +1,15 @@
 /* eslint-disable no-useless-catch */
 import type { ListEventsResponse } from "./requests";
-import parseAbi from "./utils";
-import { Event, EventDataResponse, EventsResponse } from "./event-interfaces";
+import parseAbi, { getChainId } from "./utils";
+import {
+  ErrorResponse,
+  Event,
+  EventDataResponse,
+  EventResponse,
+  EventsResponse,
+} from "./event-interfaces";
 import axios from "axios";
-import { ethers } from "ethers";
+import { ethers, toBigInt } from "ethers";
 import { abiEvent } from "./types";
 
 export default class Synchronizer {
@@ -13,7 +19,7 @@ export default class Synchronizer {
     this.URL = URL;
   }
 
-  public async GetEvents(): Promise<EventsResponse> {
+  public async GetEvents(): Promise<EventsResponse | ErrorResponse> {
     try {
       const url = `${this.URL}/api/v1/events`;
       const res = await axios.get<EventsResponse>(url, {
@@ -23,29 +29,42 @@ export default class Synchronizer {
         },
       });
 
-      const data = res.data as EventsResponse;
+      const data = res.data;
       return data;
     } catch (err: any) {
-      throw err;
+      return {
+        statusCode: err.response.status,
+        error: err.response.data.error,
+      } as ErrorResponse;
     }
   }
 
   public async InsertEvent(
     network: string,
     contract: ethers.BaseContract,
-    name: string
-  ): Promise<ListEventsResponse> {
+    name: string,
+    nodeURL: string
+  ): Promise<ListEventsResponse | ErrorResponse> {
     try {
-      // Validate there is a runner
-      const runner = contract.runner;
-      if (!runner) {
-        throw new Error("contract runner is needed");
+      // Validate the client got from the node url is valid
+      const client = new ethers.JsonRpcProvider(nodeURL);
+      if (!client) {
+        throw new Error("invalid client");
+      }
+
+      // Validate network
+      const clientChainId = (await client.getNetwork()).chainId;
+      const chainId = getChainId(network);
+      console.log("chainId: ", toBigInt(chainId));
+      console.log("clientChainId: ", clientChainId);
+      if (clientChainId !== toBigInt(chainId)) {
+        throw new Error("invalid client network");
       }
 
       // Get address
       const address = await contract.getAddress();
       // With the runner, validate contract exists
-      const code = await runner.provider.getCode(address);
+      const code = await client.provider.getCode(address);
 
       // Get and parse to an object the abi
       const contractInterface = contract.interface.formatJson();
@@ -77,8 +96,9 @@ export default class Synchronizer {
         network,
         address,
         name,
+        nodeURL,
         abi: parsedAbi,
-      };
+      } as Event;
 
       // Make POST to the api
       const res = await fetch(url, {
@@ -90,15 +110,21 @@ export default class Synchronizer {
           event,
         }),
       });
+      console.log("asasa: ", res.status);
 
       const data = (await res.json()) as ListEventsResponse;
       return data;
     } catch (err: any) {
-      throw err;
+      return {
+        statusCode: err.response.status,
+        error: err.response.data.error,
+      } as ErrorResponse;
     }
   }
 
-  public async GetEventsByAddress(address: string): Promise<EventsResponse> {
+  public async GetEventsByAddress(
+    address: string
+  ): Promise<EventsResponse | ErrorResponse> {
     try {
       const url = `${this.URL}/api/v1/events/${address}`;
       const res = await axios.get<EventsResponse>(url, {
@@ -110,32 +136,41 @@ export default class Synchronizer {
 
       const data = res.data as EventsResponse;
       return data;
-    } catch (err: unknown) {
-      throw err;
+    } catch (err: any) {
+      return {
+        statusCode: err.response.status,
+        error: err.response.data.error,
+      } as ErrorResponse;
     }
   }
 
-  async GetEvent(address: string, eventName: string): Promise<Event> {
+  async GetEvent(
+    address: string,
+    eventName: string
+  ): Promise<EventResponse | ErrorResponse> {
     try {
       const url = `${this.URL}/api/v1/events/${address}/${eventName}`;
-      const res = await axios.get<Event>(url, {
+      const res = await axios.get<EventResponse>(url, {
         method: "GET",
         headers: {
           "content-type": "application/json",
         },
       });
 
-      const data = res.data as Event;
+      const data = res.data as EventResponse;
       return data;
     } catch (err: any) {
-      throw err;
+      return {
+        statusCode: err.response.status,
+        error: err.response.data.error,
+      } as ErrorResponse;
     }
   }
 
   async GetEventData(
     address: string,
     eventName: string
-  ): Promise<EventDataResponse> {
+  ): Promise<EventDataResponse | ErrorResponse> {
     try {
       const url = `${this.URL}/api/v1/events/${address}/${eventName}/data`;
       const res = await axios.get<EventDataResponse>(url, {
@@ -145,10 +180,17 @@ export default class Synchronizer {
         },
       });
 
+      console.log("res.status: ", res.status);
+      if (res.status !== 200) {
+      }
+
       const data = res.data as EventDataResponse;
       return data;
     } catch (err: any) {
-      throw err;
+      return {
+        statusCode: err.response.status,
+        error: err.response.data.error,
+      } as ErrorResponse;
     }
   }
 }
