@@ -4,6 +4,7 @@ export interface Event {
   address: string;
   name: string;
   latestBlockNumber: number;
+  nodeURL: string;
   abi: {
     name: string;
     type: string;
@@ -54,4 +55,36 @@ export interface EventDataResponse {
     createdAt: string;
     updatedAt: string;
   };
+}
+
+export interface EventResponse {
+  data: {
+    tx: string;
+    blockNumber: number;
+    data: Record<string, any>;
+  };
+  meta: {
+    id: string;
+    network: string;
+    address: string;
+    latestBlockNumber: number;
+    abi: {
+      name: string;
+      type: string;
+      anonymous: boolean;
+      inputs: {
+        indexed: boolean;
+        internalType: string;
+        name: string;
+        type: string;
+      }[];
+    };
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+export interface ErrorResponse {
+  statusCode: number;
+  error: string;
 }
