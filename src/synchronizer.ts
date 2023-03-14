@@ -2,6 +2,7 @@
 import type { ListEventsResponse } from "./requests";
 import parseAbi, { getChainId } from "./utils";
 import {
+  ErrorResponse,
   Event,
   EventDataResponse,
   EventResponse,
@@ -31,10 +32,7 @@ export default class Synchronizer {
       const data = res.data;
       return data;
     } catch (err: any) {
-      return {
-        statusCode: err.response.status,
-        error: err.response.data.error,
-      } as any;
+      return err.response.data;
     }
   }
 
@@ -111,10 +109,7 @@ export default class Synchronizer {
       const data = (await res.json()) as ListEventsResponse;
       return data;
     } catch (err: any) {
-      return {
-        statusCode: err.response.status,
-        error: err.response.data.error,
-      } as any;
+      return err.response.data;
     }
   }
 
@@ -131,10 +126,7 @@ export default class Synchronizer {
       const data = res.data as EventsResponse;
       return data;
     } catch (err: any) {
-      return {
-        statusCode: err.response.status,
-        error: err.response.data.error,
-      } as any;
+      return err.response.data;
     }
   }
 
@@ -151,10 +143,7 @@ export default class Synchronizer {
       const data = res.data as EventResponse;
       return data;
     } catch (err: any) {
-      return {
-        statusCode: err.response.status,
-        error: err.response.data.error,
-      } as any;
+      return err.response.data;
     }
   }
 
@@ -177,10 +166,7 @@ export default class Synchronizer {
       const data = res.data as EventDataResponse;
       return data;
     } catch (err: any) {
-      return {
-        statusCode: err.response.status,
-        error: err.response.data.error,
-      } as any;
+      return err.response.data;
     }
   }
 }
