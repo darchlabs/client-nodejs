@@ -2,7 +2,6 @@
 import type { ListEventsResponse } from "./requests";
 import parseAbi, { getChainId } from "./utils";
 import {
-  ErrorResponse,
   Event,
   EventDataResponse,
   EventResponse,
@@ -165,6 +164,44 @@ export default class Synchronizer {
 
       const data = res.data as EventDataResponse;
       return data;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  }
+
+  public async RestartEvent(
+    address: string,
+    eventName: string
+  ): Promise<boolean> {
+    try {
+      const url = `${this.URL}/api/v1/events/${address}/${eventName}/restart`;
+      const res = await axios.get<EventsResponse>(url, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      return true;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  }
+
+  public async DeleteEvent(
+    address: string,
+    eventName: string
+  ): Promise<boolean> {
+    try {
+      const url = `${this.URL}/api/v1/events/${address}/${eventName}`;
+      const res = await axios.get<EventsResponse>(url, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      return true;
     } catch (err: any) {
       return err.response.data;
     }
