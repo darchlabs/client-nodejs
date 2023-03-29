@@ -16,7 +16,7 @@
     "url": "git+https://github.com/darchlabs/client-nodejs.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "darchlabs",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/darchlabs/client-nodejs/issues"
