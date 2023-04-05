@@ -1,14 +1,18 @@
 import { Synchronizers } from "darchlabs";
 
-// Define base URL for API requests
-const baseUrl = "http://localhost:5555";
+// define base url for api request
+const baseUrl = process.env.BASE_URL;
+if (baseUrl === undefined) {
+  console.log("BASE_URL env value not defined");
+  process.exit(1);
+}
 
-// Create instance of client
+// create instance of client
 const synchronizers = new Synchronizers(baseUrl);
 
-// Test function for deleting event
+// test function for deleting event
 async function testDeleteEvent() {
-  console.log("Testing deleteEvent...");
+  console.log("testing deleteEvent...");
 
   const address = "0xc13530546feA5fC787A2d126bB39bDeC20C4cc9e";
   const eventName = "Example";
@@ -21,5 +25,5 @@ async function testDeleteEvent() {
   }
 }
 
-// Run test function
+// run test function
 testDeleteEvent();

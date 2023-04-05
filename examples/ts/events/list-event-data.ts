@@ -1,14 +1,18 @@
 import { Synchronizers, Options } from "darchlabs";
 
-// Define base URL for API requests
-const baseUrl = "http://localhost:5555";
+// define base url for api request
+const baseUrl = process.env.BASE_URL;
+if (baseUrl === undefined) {
+  console.log("BASE_URL env value not defined");
+  process.exit(1);
+}
 
-// Create instance of client
+// create instance of client
 const synchronizers = new Synchronizers(baseUrl);
 
-// Test function for listing event with default options
+// test function for listing event with default options
 async function testListEventDataDefaultOptions() {
-  console.log("Testing listEventData with default options...");
+  console.log("testing listEventData with default options...");
 
   const address = "0xc13530546feA5fC787A2d126bB39bDeC20C4cc9e";
   const eventName = "Example";
@@ -21,9 +25,9 @@ async function testListEventDataDefaultOptions() {
   }
 }
 
-// Test function for listing event with custom options
+// test function for listing event with custom options
 async function testListEventDataCustomOptions() {
-  console.log("Testing listEventData with custom options...");
+  console.log("testing listEventData with custom options...");
 
   const address = "0xc13530546feA5fC787A2d126bB39bDeC20C4cc9e";
   const eventName = "Example";
@@ -42,6 +46,6 @@ async function testListEventDataCustomOptions() {
   }
 }
 
-// Run test functions
+// run test functions
 testListEventDataDefaultOptions();
 testListEventDataCustomOptions();
