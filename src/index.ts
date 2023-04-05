@@ -1,3 +1,3 @@
 export * from "./synchronizers";
-export * from "./types";
-export * from "./responses";
+export * from "./smartcontracts";
+export * from "./util";
