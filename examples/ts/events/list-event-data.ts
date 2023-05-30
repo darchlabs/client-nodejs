@@ -14,8 +14,8 @@ const synchronizers = new Synchronizers(baseUrl);
 async function testListEventDataDefaultOptions() {
   console.log("testing listEventData with default options...");
 
-  const address = "0xc13530546feA5fC787A2d126bB39bDeC20C4cc9e";
-  const eventName = "Example";
+  const address = "0xE15A66b7B8e385CAa6F69FD0d55984B96D7263CF";
+  const eventName = "Transfer";
 
   try {
     const response = await synchronizers.listEventData(address, eventName);
@@ -29,11 +29,11 @@ async function testListEventDataDefaultOptions() {
 async function testListEventDataCustomOptions() {
   console.log("testing listEventData with custom options...");
 
-  const address = "0xc13530546feA5fC787A2d126bB39bDeC20C4cc9e";
-  const eventName = "Example";
+  const address = "0xE15A66b7B8e385CAa6F69FD0d55984B96D7263CF";
+  const eventName = "Transfer";
 
   const opts: Options = {
-    limit: 10,
+    limit: 100,
     page: 1,
     sort: "desc",
   };
