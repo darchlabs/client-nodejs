@@ -13,3 +13,4 @@ export type ListSmartContractsResponse = {
 };
 
 export type DeleteSmartContractResponse = {};
+export type RestartSmartContractResponse = {};

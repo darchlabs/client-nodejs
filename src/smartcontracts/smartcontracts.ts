@@ -1,6 +1,11 @@
 import axios from "axios";
 import { Options } from "../util";
-import { DeleteSmartContractResponse, InsertSmartContractResponse, ListSmartContractsResponse } from "./responses";
+import {
+  DeleteSmartContractResponse,
+  InsertSmartContractResponse,
+  ListSmartContractsResponse,
+  RestartSmartContractResponse,
+} from "./responses";
 
 import type { SmartContractInput } from "./types";
 
@@ -33,6 +38,13 @@ export class SmartContracts {
   public async deleteSmartContractByAddress(address: string): Promise<DeleteSmartContractResponse> {
     const url = `${this.baseUrl}/api/v1/smartcontracts/${address}`;
     const response = await axios.delete<DeleteSmartContractResponse>(url);
+
+    return response.data;
+  }
+
+  public async restartSmartContractByAddress(address: string): Promise<RestartSmartContractResponse> {
+    const url = `${this.baseUrl}/api/v1/smartcontracts/${address}/restart`;
+    const response = await axios.post<RestartSmartContractResponse>(url);
 
     return response.data;
   }
