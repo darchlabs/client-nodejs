@@ -1,6 +1,6 @@
 {
   "name": "darchlabs",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "description": "The DarchLabs client is a Node.js library for interacting with the Synchronizers, Nodes and Jobs APIs. It provides an easy-to-use interface for managing data.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
