@@ -7,7 +7,7 @@ import {
   RestartSmartContractResponse,
 } from "./responses";
 
-import type { SmartContractInput } from "./types";
+import { type SmartContractInput } from "./types";
 
 export class SmartContracts {
   private baseUrl: string;
