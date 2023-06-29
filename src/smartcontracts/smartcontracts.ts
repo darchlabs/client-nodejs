@@ -2,12 +2,14 @@ import axios from "axios";
 import { Options } from "../util";
 import {
   DeleteSmartContractResponse,
+  UpdateSmartContractResponse,
   InsertSmartContractResponse,
   ListSmartContractsResponse,
   RestartSmartContractResponse,
 } from "./responses";
 
 import { type SmartContractInput } from "./types";
+import { error } from "console";
 
 export class SmartContracts {
   private baseUrl: string;
@@ -45,6 +47,18 @@ export class SmartContracts {
   public async restartSmartContractByAddress(address: string): Promise<RestartSmartContractResponse> {
     const url = `${this.baseUrl}/api/v1/smartcontracts/${address}/restart`;
     const response = await axios.post<RestartSmartContractResponse>(url);
+
+    return response.data;
+  }
+
+  public async updateSmartContract(
+    address: string,
+    data: { name: string; nodeURL: string; webhook: string }
+  ): Promise<UpdateSmartContractResponse> {
+    const url = `${this.baseUrl}/api/v1/smartcontracts/${address}`;
+    const response = await axios.patch<UpdateSmartContractResponse>(url, {
+      smartcontract: data,
+    });
 
     return response.data;
   }
