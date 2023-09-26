@@ -113,3 +113,17 @@ export const NetworkInfo: {
     token: "LINK",
   },
 };
+
+export const IsEVM = (network: Network): boolean => {
+  switch (network) {
+    case "ethereum":
+    case "goerli":
+    case "sepolia":
+    case "polygon":
+    case "mumbai": {
+      return true
+    }
+  }
+
+  return false
+}
