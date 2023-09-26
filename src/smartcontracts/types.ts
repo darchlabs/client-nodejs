@@ -1,7 +1,10 @@
 import { Event } from "../synchronizers/types";
-import { Abi, Network } from "../util";
+import { Abi, Network, type Subset } from "../util";
 
 export type SmartContractStatus = "idle" | "running" | "stopping" | "synching" | "stopped" | "error" | "quota_exceeded";
+
+export type SmartContactNetwork = Subset<Network, "ethereum" | "polygon">;
+export const SmartContractNetwoks: SmartContactNetwork[] = ["ethereum", "polygon"];
 
 export type SmartContractInput = {
   name: string;
