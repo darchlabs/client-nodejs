@@ -3,8 +3,8 @@ import { Abi, Network, type Subset } from "../util";
 
 export type SmartContractStatus = "idle" | "running" | "stopping" | "synching" | "stopped" | "error" | "quota_exceeded";
 
-export type SmartContactNetwork = Subset<Network, "ethereum" | "polygon" | "mumbai">;
-export const SmartContractNetwoks: SmartContactNetwork[] = ["ethereum", "polygon", "mumbai"];
+export type SmartContractNetwork = Subset<Network, "ethereum" | "polygon" | "mumbai">;
+export const SmartContractNetwoks: SmartContractNetwork[] = ["ethereum", "polygon", "mumbai"];
 
 export type SmartContractInput = {
   name: string;

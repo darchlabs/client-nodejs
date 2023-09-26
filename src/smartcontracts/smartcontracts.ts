@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { Options } from "../util";
 import {
   DeleteSmartContractResponse,
@@ -9,18 +9,17 @@ import {
 } from "./responses";
 
 import { type SmartContractInput } from "./types";
-import { error } from "console";
 
 export class SmartContracts {
-  private baseUrl: string;
+  private client: AxiosInstance;
 
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  constructor(client: AxiosInstance) {
+    this.client = client;
   }
 
   public async insertSmartContract(smartcontract: SmartContractInput): Promise<InsertSmartContractResponse> {
-    const url = `${this.baseUrl}/api/v1/smartcontracts`;
-    const response = await axios.post<InsertSmartContractResponse>(url, { smartcontract });
+    const url = `/api/v1/smartcontracts`;
+    const response = await this.client.post<InsertSmartContractResponse>(url, { smartcontract });
 
     return response.data;
   }
@@ -31,22 +30,22 @@ export class SmartContracts {
     if (options?.page) params.page = options.page;
     if (options?.sort) params.sort = options.sort;
 
-    const url = `${this.baseUrl}/api/v1/smartcontracts`;
-    const response = await axios.get<ListSmartContractsResponse>(url, { params });
+    const url = `/api/v1/smartcontracts`;
+    const response = await this.client.get<ListSmartContractsResponse>(url, { params });
 
     return response.data;
   }
 
   public async deleteSmartContractByAddress(address: string): Promise<DeleteSmartContractResponse> {
-    const url = `${this.baseUrl}/api/v1/smartcontracts/${address}`;
-    const response = await axios.delete<DeleteSmartContractResponse>(url);
+    const url = `/api/v1/smartcontracts/${address}`;
+    const response = await this.client.delete<DeleteSmartContractResponse>(url);
 
     return response.data;
   }
 
   public async restartSmartContractByAddress(address: string): Promise<RestartSmartContractResponse> {
-    const url = `${this.baseUrl}/api/v1/smartcontracts/${address}/restart`;
-    const response = await axios.post<RestartSmartContractResponse>(url);
+    const url = `/api/v1/smartcontracts/${address}/restart`;
+    const response = await this.client.post<RestartSmartContractResponse>(url);
 
     return response.data;
   }
@@ -55,8 +54,8 @@ export class SmartContracts {
     address: string,
     data: { name: string; nodeURL: string; webhook: string }
   ): Promise<UpdateSmartContractResponse> {
-    const url = `${this.baseUrl}/api/v1/smartcontracts/${address}`;
-    const response = await axios.patch<UpdateSmartContractResponse>(url, {
+    const url = `/api/v1/smartcontracts/${address}`;
+    const response = await this.client.patch<UpdateSmartContractResponse>(url, {
       smartcontract: data,
     });
 
