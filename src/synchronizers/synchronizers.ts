@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { Options } from "../util";
 import {
   DeleteEventResponse,
   GetEventResponse,
@@ -13,7 +14,7 @@ import {
   StopCronjobResponse,
   StopEventResponse,
 } from "./responses";
-import { EventInput, Options } from "./types";
+import { EventInput } from "./types";
 
 export class Synchronizers {
   private baseUrl: string;

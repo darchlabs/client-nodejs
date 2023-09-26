@@ -1,4 +1,4 @@
-import { EventInput } from "../types";
+import { EventInput } from "../index";
 
 export const baseAddress = "0xc13530546feA5fC787A2d126bB39bDeC20C4cc9e";
 

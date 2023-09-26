@@ -1,4 +1,5 @@
-import type { Cronjob, EventData, Pagination, Event } from "./types";
+import { Pagination } from "../util";
+import type { Cronjob, EventData, Event } from "./types";
 
 type _eventResponse = {
   data: Event;

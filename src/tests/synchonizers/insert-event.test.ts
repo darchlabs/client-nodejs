@@ -1,10 +1,8 @@
-import { Synchronizers } from "../index";
-import { EventInput } from "../types";
-import { InsertEventResponse } from "../responses";
-import { baseAddress, baseEventInput, baseEventStatuses } from "./base";
+import { Synchronizers, EventInput, InsertEventResponse } from "../../index";
+import { baseAddress, baseEventInput, baseEventStatuses } from "../base";
 
 describe("Synchronizers", () => {
-  const baseUrl = "http://localhost:5555";
+  const baseUrl = process.env.BASE_URL!;
   const eventInput: EventInput = baseEventInput;
   const addressInput = baseAddress;
   let synchronizers: Synchronizers;

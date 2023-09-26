@@ -1,14 +1,18 @@
 import { Synchronizers, Options } from "darchlabs";
 
-// Define base URL for API requests
-const baseUrl = "http://localhost:5555";
+// define base url for api request
+const baseUrl = process.env.BASE_URL;
+if (baseUrl === undefined) {
+  console.log("BASE_URL env value not defined");
+  process.exit(1);
+}
 
-// Create instance of client
+// create instance of client
 const synchronizers = new Synchronizers(baseUrl);
 
-// Test function for listing events with default options
+// test function for listing events with default options
 async function testListEventsDefaultOptions() {
-  console.log("Testing listEvents with default options...");
+  console.log("testing listEvents with default options...");
   try {
     const response = await synchronizers.listEvents();
     console.log("Response:", response);
@@ -17,9 +21,9 @@ async function testListEventsDefaultOptions() {
   }
 }
 
-// Test function for listing events with custom options
+// test function for listing events with custom options
 async function testListEventsCustomOptions() {
-  console.log("Testing listEvents with custom options...");
+  console.log("testing listEvents with custom options...");
 
   const opts: Options = {
     limit: 1,
@@ -35,6 +39,6 @@ async function testListEventsCustomOptions() {
   }
 }
 
-// Run test functions
+// run test functions
 testListEventsDefaultOptions();
 testListEventsCustomOptions();

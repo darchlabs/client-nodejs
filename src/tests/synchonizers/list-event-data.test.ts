@@ -1,10 +1,8 @@
-import { ListEventsResponse } from "../responses";
-import { Synchronizers, ListEventDataResponse } from "../index";
-import { EventInput, Options, Pagination } from "../types";
-import { baseAddress, baseEventDataExample, baseEventInput, baseEventStatuses, Sleep } from "./base";
+import { Synchronizers, ListEventDataResponse, EventInput, Options } from "../../index";
+import { baseAddress, baseEventDataExample, baseEventInput, baseEventStatuses, Sleep } from "../base";
 
 describe("Synchronizers", () => {
-  const baseUrl = "http://localhost:5555";
+  const baseUrl = process.env.BASE_URL!;
   const eventInput: EventInput = baseEventInput;
   const addressInput = baseAddress;
   let synchronizers: Synchronizers;

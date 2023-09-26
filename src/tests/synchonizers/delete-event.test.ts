@@ -1,9 +1,16 @@
-import { EventInput, Synchronizers } from "../index";
-import { DeleteEventResponse } from "../responses";
-import { baseAddress, baseEventInput } from "./base";
+import { EventInput, Synchronizers, DeleteEventResponse } from "../../index";
+import { baseAddress, baseEventInput } from "../base";
 
 describe("Synchronizers", () => {
-  const baseUrl = "http://localhost:5555";
+  console.log("=======");
+  console.log("=======");
+  console.log("=======");
+  console.log("=======");
+  console.log("=======");
+  console.log("=======");
+  console.log("=======", process.env.BASE_URL);
+
+  const baseUrl = process.env.BASE_URL!;
   const eventInput: EventInput = baseEventInput;
   const addressInput = baseAddress;
   let synchronizers: Synchronizers;
