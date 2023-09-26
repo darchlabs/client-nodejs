@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser"
 
-import { Webhook } from "./types";
+import { Webhook } from "../webhooks/types";
 
 const DEFAULT_CALLBACK = (webhook: Webhook<any>) => {
 	console.log("========================")
