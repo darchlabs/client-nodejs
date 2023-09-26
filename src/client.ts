@@ -1,14 +1,16 @@
 import { SmartContracts } from "./smartcontracts";
 import Axios from "axios";
 
-type Services = "smartcontracts"
+type Services = "smartcontracts" | "jobs" | "nodes";
 
 type ApiEndpointUrls = {
 	[key in Services]: string
 }
 
 const DEFAULT_URLS: ApiEndpointUrls = {
-	"smartcontracts": "https://synchronizers.darchlabs.com/"
+	"smartcontracts": "https://synchronizers.darchlabs.com/",
+	"jobs": "https://jobs.darchlabs.com/",
+	"nodes": "https://nodes.darchlabs.com/"
 }
 
 export class Darchlabs {

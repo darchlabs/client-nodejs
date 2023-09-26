@@ -1,5 +1,1 @@
-import * as Util from "./util"
-
-export {
-	Util,
-}
+export * from "./types"
