@@ -1,4 +1,4 @@
-import { Subset, type Network } from "../util";
+import { Subset } from "../utils";
 import { NetworkEnvironment } from "./network";
 
 // define node statuses

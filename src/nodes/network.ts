@@ -1,4 +1,5 @@
-import { Subset, type Network } from "../util";
+import { Subset } from "../utils";
+import { type Network } from "../utils/network";
 
 export type NetworkEnvironment =
   // | ["ethereum", "mainnet"]
@@ -13,7 +14,7 @@ export type NetworkEnvironmentKey = Subset<
   | "alfajores"
   // "chainlink" |
   | "chainlink_sepolia"
-  // "ethereum" | "celo" | "alfajores" | "chainlink" | "chainlink_sepolia"
+// "ethereum" | "celo" | "alfajores" | "chainlink" | "chainlink_sepolia"
 >;
 
 export const NetworksEnvironments: { [K in NetworkEnvironmentKey]: NetworkEnvironment } = {
