@@ -1,8 +1,7 @@
-import { AxiosInstance } from "axios";
+import { AxiosInstance, AxiosResponse, isAxiosError } from "axios";
 import { Options, Pagination } from "../../utils/pagination";
 import { ContractsResponse } from "./responses";
-
-import { Contract, type ContractInput } from "./types";
+import { Contract, ContractInput } from "./types";
 
 export class ContractClient {
   private _client: AxiosInstance;
@@ -15,16 +14,39 @@ export class ContractClient {
     this._client = client;
   }
 
+  private async handleRequest<T>(
+    requestPromise: Promise<AxiosResponse<{ data?: T, meta?: any, error?: string }>>
+  ): Promise<{ data: T; meta: any }> {
+    try {
+      // make request and check if response is valid
+      const response = await requestPromise;
+      if (!response) {
+        throw new Error("Error: Server did not respond, please try again later.");
+      }
+
+      // get data and status code from response
+      const { status, data } = response;
+      if (status !== 200 && status !== 201) {
+        if (data?.error) {
+          throw new Error(data.error);
+        }
+        throw new Error(`Error: Received status code ${status}`);
+      }
+
+      return { data: data?.data, meta: data?.meta };
+    } catch (err) {
+      if (isAxiosError(err) && err?.response?.data?.error) {
+        throw new Error(err.response.data.error);
+      }
+
+      throw err;
+    }
+  }
+
   public async createContract(contract: ContractInput): Promise<Contract> {
     const url = `/api/v1/smartcontracts`;
-    const { data } = await this._client.post<{ data: Contract, error: string }>(url, { smartcontract: contract });
-    // TODO(ca): check status code
-
-    if (data?.error && data?.error !== "") {
-      throw new Error(data.error)
-    }
-
-    return data?.data;
+    const response = await this.handleRequest(this._client.post<{ data: Contract, error?: string }>(url, { smartcontract: contract }));
+    return response.data;
   }
 
   public async listContracts(options?: Options): Promise<ContractsResponse> {
@@ -34,36 +56,28 @@ export class ContractClient {
     if (options?.sort) params.sort = options.sort;
 
     const url = `/api/v1/smartcontracts`;
-    const { data } = await this._client.get<{ data: Contract[], meta: { pagination: Pagination } }>(url, { params });
-    // TODO(ca): check status code
+    const response = await this.handleRequest(
+      this._client.get<{ data: Contract[], meta: { pagination: Pagination }, error?: string }>(url, { params })
+    );
 
-    return { contracts: data?.data, pagination: data?.meta?.pagination };
+    return { contracts: response.data, pagination: response.meta?.pagination };
   }
 
   public async deleteContractByAddress(address: string): Promise<void> {
     const url = `/api/v1/smartcontracts/${address}`;
-    await this._client.delete<void>(url);
-    // TODO(ca): check status code
-
-    return
+    await this.handleRequest(this._client.delete<{ error?: string }>(url));
   }
 
   public async restartContractByAddress(address: string): Promise<void> {
     const url = `/api/v1/smartcontracts/${address}/restart`;
-    await this._client.post<void>(url);
-    // TODO(ca): check status code
-
-    return
+    await this.handleRequest(this._client.post<{ error?: string }>(url));
   }
 
   public async updateContract(
     address: string,
-    data: { name: string; nodeURL: string; webhook: string }
+    input: { name: string; nodeURL: string; webhook: string }
   ): Promise<void> {
     const url = `/api/v1/smartcontracts/${address}`;
-    await this._client.patch<void>(url, { smartcontract: data });
-    // TODO(ca): check status code
-
-    return
+    await this.handleRequest(this._client.patch<{ error?: string }>(url, { smartcontract: input }));
   }
 }

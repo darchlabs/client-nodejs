@@ -12,7 +12,7 @@ export type TriggerEVMMethodConfig = {
 
 
 export const TriggerEVMMethod = async (config: TriggerEVMMethodConfig): Promise<any> => {
-  if (typeof window === "undefined") {
+  if (typeof window !== "undefined") {
     throw new Error("This function cannot be executed in a Browser environment");
   }
 

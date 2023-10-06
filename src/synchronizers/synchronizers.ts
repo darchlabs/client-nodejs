@@ -2,7 +2,7 @@ import { AxiosInstance } from "axios";
 import { ContractClient } from "./contracts/contracts";
 import { EventClient } from "./events/events";
 
-export class Syncronizer {
+export class Syncronizers {
   private _contracts: ContractClient;
   private _events: EventClient;
 
