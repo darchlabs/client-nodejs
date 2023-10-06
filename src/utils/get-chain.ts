@@ -4,7 +4,7 @@ export const GetNetworkId = (name: Network): number => {
   return ChainIds[name];
 };
 
-export const GetNetworkName = (id: number): Network => {
+export const GetNetworkName = (id: number): Network | undefined => {
   for (const network in ChainIds) {
     if (ChainIds[network as Network] === id) {
       return network as Network;

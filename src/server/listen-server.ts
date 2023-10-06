@@ -1,6 +1,3 @@
-import express from "express";
-import bodyParser from "body-parser"
-
 import { Webhook } from "../webhooks/types";
 
 const DEFAULT_CALLBACK = (webhook: Webhook<any>) => {
@@ -9,11 +6,14 @@ const DEFAULT_CALLBACK = (webhook: Webhook<any>) => {
 	console.log(webhook);
 }
 
-export const ListenServer = <T>(port: number = 3000, path: string = "/api/v1/webbook", callback: (webhook: Webhook<T>) => void = DEFAULT_CALLBACK) => {
-	// load express
-	const app = express();
-	const router = express.Router();
+export const ListenServer = async <T>(port: number = 3000, path: string = "/api/v1/webbook", callback: (webhook: Webhook<T>) => void = DEFAULT_CALLBACK) => {
+	// load dependencies
+	const express = await import("express");
+	const bodyParser = await import("body-parser")
+
+	const app = express.default()
 	app.use(bodyParser.json())
+	const router = express.Router();
 
 	// define router
 	router.post(path, (req, res) => {

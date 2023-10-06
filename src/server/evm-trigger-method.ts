@@ -1,6 +1,5 @@
-import { ethers } from "ethers";
-import { IsEVM, type Network } from "./network";
-import { Abi } from "./abi";
+import { IsEVM, type Network } from "../utils/network";
+import { Abi } from "../utils/abi";
 
 export type TriggerEVMMethodConfig = {
   network: Network;
@@ -11,11 +10,17 @@ export type TriggerEVMMethodConfig = {
   methodName: string;
 }
 
-export const TriggerEVMMethod = async (config: TriggerEVMMethodConfig): Promise<ethers.Transaction> => {
+
+export const TriggerEVMMethod = async (config: TriggerEVMMethodConfig): Promise<any> => {
+  if (typeof window === "undefined") {
+    throw new Error("This function cannot be executed in a Browser environment");
+  }
+
   if (!IsEVM(config.network)) {
     throw new Error(`trigger are not implemented to network=${config.network}`)
   }
 
+  const ethers = await import("ethers");
   const provider = new ethers.JsonRpcProvider(config.nodeUrl);
   const wallet = new ethers.Wallet(config.privateKey, provider);
   const contract = new ethers.Contract(config.address, config.abi, wallet);
