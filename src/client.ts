@@ -1,10 +1,12 @@
-import { Syncronizer } from "./synchronizers/synchronizers";
-import Axios from "axios";
+import EventEmitter from "eventemitter3";
+import { Syncronizers } from "./synchronizers/synchronizers";
+import { Jobs } from "./jobs/jobs";
+import Axios, { AxiosInstance } from "axios";
 
-type Services = "synchronizers" | "jobs" | "nodes";
+export type Service = "synchronizers" | "jobs" | "nodes";
 
-type ApiEndpointUrls = {
-	[key in Services]: string
+export type ApiEndpointUrls = {
+	[key in Service]: string
 }
 
 const DEFAULT_URLS: ApiEndpointUrls = {
@@ -13,46 +15,72 @@ const DEFAULT_URLS: ApiEndpointUrls = {
 	"nodes": "https://nodes.darchlabs.com/"
 }
 
-export class Darchlabs {
-	private apiKey: string;
+export class Darchlabs extends EventEmitter {
+	private _apiKey: string;
 	private _apiEndpoints: ApiEndpointUrls;
-	private _synchronizers: Syncronizer;
+	private _synchronizers: Syncronizers;
+	private _jobs: Jobs;
 
 	constructor(apiKey: string = "", ApiEndpointUrls: ApiEndpointUrls = DEFAULT_URLS) {
-		this.apiKey = apiKey;
+		super();
+
+		this._apiKey = apiKey;
 		this._apiEndpoints = ApiEndpointUrls;
 
-		const clientBase = {
-			headers: {
-				'Content-Type': 'application/json',
-			}
-		};
-
-		if (!apiKey || apiKey !== "") {
-			clientBase.headers["Authorization"] = `Bearer ${this.apiKey}`
-		}
-
-		this._synchronizers = new Syncronizer(Axios.create({ ...clientBase, baseURL: this._apiEndpoints.synchronizers }))
+		this._synchronizers = new Syncronizers(this.generateClient(this._apiKey, "synchronizers"))
+		this._jobs = new Jobs(this.generateClient(this._apiKey, "jobs"))
 	}
 
 	public updateApiKey(apiKey: string) {
-		this.apiKey = apiKey;
+		this._apiKey = apiKey;
 
-		// define new client
-		const clientBase = {
-			headers: {
-				'Content-Type': 'application/json',
-			}
-		};
-
-		if (!apiKey || apiKey !== "") {
-			clientBase.headers["Authorization"] = `Bearer ${this.apiKey}`
-		}
-
-		this._synchronizers.setClient(Axios.create({ ...clientBase, baseURL: this._apiEndpoints.synchronizers }))
+		this._synchronizers = new Syncronizers(this.generateClient(this._apiKey, "synchronizers"))
+		this._jobs = new Jobs(this.generateClient(this._apiKey, "jobs"))
 	}
 
 	get synchronizers() {
 		return this._synchronizers;
+	}
+
+	get jobs() {
+		return this._jobs;
+	}
+
+	private generateClient(token: string, service: Service): AxiosInstance {
+		const clientBase = {
+			headers: {
+				'Content-Type': 'application/json',
+			}
+		};
+
+		if (!token || token !== "") {
+			clientBase.headers["Authorization"] = `Bearer ${token}`
+		}
+
+		const client = Axios.create({ ...clientBase, baseURL: this._apiEndpoints[service] })
+
+		client.interceptors.response.use(
+			response => response,
+			error => {
+				if (error?.response?.status === 401) {
+					this.emit("unauthorized", error);
+				}
+
+				error
+			}
+		);
+
+		client.interceptors.response.use(
+			response => response,
+			error => {
+				if (error?.response?.status === 401) {
+					this.emit("unauthorized", error);
+				}
+
+				return Promise.reject(error);
+			}
+		);
+
+		return client
 	}
 }
