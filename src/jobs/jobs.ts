@@ -14,9 +14,12 @@ export class Jobs {
 
   private async handleRequest<T>(requestPromise: Promise<AxiosResponse<{ data?: T, error?: string }>>): Promise<T> {
     try {
+      console.log(this._client)
       // make request and check if response is valid
       const response = await requestPromise;
+      console.log("response", response)
       if (!response) {
+        console.log("JEJEJEJE por acá")
         throw new Error("Error: Server did not respond, please try again later.");
       }
 
@@ -32,10 +35,18 @@ export class Jobs {
 
       return data?.data;
     } catch (err) {
+      console.log(111)
       if (isAxiosError(err) && err?.response?.data?.error) {
+        console.log(222)
+        console.log(222)
+        console.log(222)
+        console.log(222)
         throw new Error(err.response.data.error);
       }
 
+      console.log(333)
+      console.log(333)
+      console.log(333)
       throw err;
     }
   }

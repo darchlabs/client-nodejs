@@ -57,30 +57,6 @@ export class Darchlabs extends EventEmitter {
 			clientBase.headers["Authorization"] = `Bearer ${token}`
 		}
 
-		const client = Axios.create({ ...clientBase, baseURL: this._apiEndpoints[service] })
-
-		client.interceptors.response.use(
-			response => response,
-			error => {
-				if (error?.response?.status === 401) {
-					this.emit("unauthorized", error);
-				}
-
-				error
-			}
-		);
-
-		client.interceptors.response.use(
-			response => response,
-			error => {
-				if (error?.response?.status === 401) {
-					this.emit("unauthorized", error);
-				}
-
-				return Promise.reject(error);
-			}
-		);
-
-		return client
+		return Axios.create({ ...clientBase, baseURL: this._apiEndpoints[service] })
 	}
 }
